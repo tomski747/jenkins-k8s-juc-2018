@@ -1,5 +1,2 @@
-1. Run on a seperate shell:
-    kubectl proxy
-
-2. go to:
-    http://127.0.0.1:8001/api/v1/namespaces/{{ .Release.Namespace }}/services/{{ template "juc2018-demo-app.name" . }}:http/proxy/
+1. Run this to see the app:
+    minikube service {{ template "juc2018-demo-app.name" . }}
