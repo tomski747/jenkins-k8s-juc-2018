@@ -38,12 +38,12 @@ spec:
         stage('Docker Build') {
             steps {
                 script {
-                    dockerImageRepository = "tkdemo/${JOB_BASE_NAME}"
+                    dockerImageRepository = "tkdemo/${JOB_NAME.split('/').first}"
                     dockerImageTag = "${BRANCH_NAME}-${BUILD_NUMBER}"
-                    fullDockerImageTag = "${dockerImageRepository}:${dockerImageTag}"
+                    dockerImageFullName = "${dockerImageRepository}:${dockerImageTag}"
                 }
                 container('builder') {
-                    sh "docker build  -t ${dockerImageTag} ."
+                    sh "docker build  -t ${dockerImageFullName} ."
                 }
             }
         }
@@ -51,7 +51,7 @@ spec:
         stage('Test') {
             steps {
                 container('builder') {
-                    sh "docker run --rm ${fullDockerImageTag} npm test "
+                    sh "docker run --rm ${dockerImageFullName} npm test "
                 }
             }
         }
@@ -60,7 +60,7 @@ spec:
             steps {
                 container('builder') {
                     sh "docker login -u ${DOCKERHUB_USR} -p ${DOCKERHUB_PSW}"
-                    sh "docker push ${fullDockerImageTag}"
+                    sh "docker push ${dockerImageFullName}"
                 }
             }
         }
