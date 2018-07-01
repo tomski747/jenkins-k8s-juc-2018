@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: docker-builder
+  labels:
+    app: docker
+spec:
+  # Declare shared volumes between containers
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+  containers:
+  - name: docker
+    # Using docker official docker image
+    image: docker
+    command: ['sh', '-c', 'docker ps']
+    # Might be security concern
+    securityContext:
+      privileged: true
+    # Where to mount
+    volumeMounts:
+      - name: docker-sock
+        mountPath: /var/run/docker.sock
