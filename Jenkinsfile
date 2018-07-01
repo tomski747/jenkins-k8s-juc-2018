@@ -3,8 +3,8 @@ pipeline {
     kubernetes {
       label 'mypod'
       containerTemplate {
-        name 'maven'
-        image 'maven:3.3.9-jdk-8-alpine'
+        name 'docker'
+        image 'docker'
         ttyEnabled true
         command 'cat'
       }
@@ -13,7 +13,7 @@ pipeline {
   stages {
     stage('MyStage') {
       steps {
-        sh 'uptime'
+        sh 'ls -la'
       }
     }
   }
