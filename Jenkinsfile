@@ -35,8 +35,9 @@ spec:
 
     stages {
 
-        stage('Set Metadata Variables') {
+        stage('Checkout') {
             steps {
+                echo "Setting docker image name variables"
                 script {
                     jobBaseName = JOB_NAME.split('/').first()
                     dockerImageRepository = "tkdemo/${jobBaseName}"
@@ -74,12 +75,12 @@ spec:
         stage('Deploy') {
             steps {
                 container('deployer') {
-                    dir('helm-charts/hello-jenkins') {
+                    dir('helm-charts') {
                         sh """
-                            echo helm upgrade ${BRANCH_NAME} \
+                            echo helm upgrade ${BRANCH_NAME} ./hello-jenkins\
                                  --install \
-                                 --values image.repository=${dockerImageRepository},\
-                                          image.tag=${dockerImageTag} .
+                                 --set image.repository=${dockerImageRepository},\
+                                 --set image.tag=${dockerImageTag}
                            """
                     }
                 }

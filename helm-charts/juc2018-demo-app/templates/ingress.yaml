@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "hello-jenkins.fullname" . -}}
+{{- $fullName := include "juc2018-demo-app.fullname" . -}}
 {{- $servicePort := .Values.service.port -}}
 {{- $ingressPath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
@@ -7,8 +7,8 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app: {{ template "hello-jenkins.name" . }}
-    chart: {{ template "hello-jenkins.chart" . }}
+    app: {{ template "juc2018-demo-app.name" . }}
+    chart: {{ template "juc2018-demo-app.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}

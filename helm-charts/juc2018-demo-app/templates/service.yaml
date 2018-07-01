@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "hello-jenkins.fullname" . }}
+  name: {{ template "juc2018-demo-app.fullname" . }}
   labels:
-    app: {{ template "hello-jenkins.name" . }}
-    chart: {{ template "hello-jenkins.chart" . }}
+    app: {{ template "juc2018-demo-app.name" . }}
+    chart: {{ template "juc2018-demo-app.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "hello-jenkins.name" . }}
+    app: {{ template "juc2018-demo-app.name" . }}
     release: {{ .Release.Name }}

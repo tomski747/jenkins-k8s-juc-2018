@@ -1,22 +1,22 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "hello-jenkins.fullname" . }}
+  name: {{ template "juc2018-demo-app.fullname" . }}
   labels:
-    app: {{ template "hello-jenkins.name" . }}
-    chart: {{ template "hello-jenkins.chart" . }}
+    app: {{ template "juc2018-demo-app.name" . }}
+    chart: {{ template "juc2018-demo-app.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "hello-jenkins.name" . }}
+      app: {{ template "juc2018-demo-app.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "hello-jenkins.name" . }}
+        app: {{ template "juc2018-demo-app.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
