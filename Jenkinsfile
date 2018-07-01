@@ -35,13 +35,20 @@ spec:
     }
 
     stages {
-        stage('Docker Build') {
+
+        stage('Set Metadata Variables') {
             steps {
                 script {
                     dockerImageRepository = "tkdemo/${JOB_NAME.split('/').first}"
                     dockerImageTag = "${BRANCH_NAME}-${BUILD_NUMBER}"
                     dockerImageFullName = "${dockerImageRepository}:${dockerImageTag}"
                 }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+
                 container('builder') {
                     sh "docker build  -t ${dockerImageFullName} ."
                 }
