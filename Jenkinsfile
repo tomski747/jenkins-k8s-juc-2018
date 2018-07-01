@@ -31,7 +31,6 @@ spec:
 
     environment {
         DOCKERHUB = credentials('dockerhub')
-
     }
 
     stages {
@@ -39,7 +38,8 @@ spec:
         stage('Set Metadata Variables') {
             steps {
                 script {
-                    dockerImageRepository = "tkdemo/${JOB_NAME.split('/').first}"
+                    jobBaseName = JOB_NAME.split('/').first()
+                    dockerImageRepository = "tkdemo/${jobBaseName}"
                     dockerImageTag = "${BRANCH_NAME}-${BUILD_NUMBER}"
                     dockerImageFullName = "${dockerImageRepository}:${dockerImageTag}"
                 }
