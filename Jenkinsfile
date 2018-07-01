@@ -43,6 +43,7 @@ spec:
                     dockerImageRepository = "tkdemo/${jobBaseName}"
                     dockerImageTag = "${BRANCH_NAME}-${BUILD_NUMBER}"
                     dockerImageFullName = "${dockerImageRepository}:${dockerImageTag}"
+                    helmReleaseName = "${jobBaseName}-${BRANCH_NAME}"
                 }
             }
         }
@@ -72,15 +73,17 @@ spec:
                 }
             }
         }
+
         stage('Deploy') {
             steps {
                 container('deployer') {
                     dir('helm-charts') {
                         sh """
-                            echo helm upgrade ${BRANCH_NAME} ./hello-jenkins\
-                                 --install \
-                                 --set image.repository=${dockerImageRepository},\
-                                 --set image.tag=${dockerImageTag}
+                            helm upgrade ${helmReleaseName} ./juc2018-demo-app\
+                                --install \
+                                --set nameOverride=${helmReleaseName}
+                                --set image.repository=${dockerImageRepository},\
+                                --set image.tag=${dockerImageTag}
                            """
                     }
                 }
