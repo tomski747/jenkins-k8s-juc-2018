@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'mypod'
+      label env.BUILD_TAG
       containerTemplate {
         name 'docker'
         image 'docker'
@@ -10,14 +10,14 @@ pipeline {
       }
     }
   }
-  stages {
-    stage('MyStage') {
-      steps {
-        sh 'ls -la'
-      }
-    }
-  }
   environment {
     foo = 'bar'
+  }
+  stages {
+    stage('Docker Build') {
+      steps {
+        sh 'docker ps'
+      }
+    }
   }
 }
