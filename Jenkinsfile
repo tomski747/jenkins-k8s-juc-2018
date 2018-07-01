@@ -81,7 +81,7 @@ spec:
                         sh """
                             helm upgrade ${helmReleaseName} ./juc2018-demo-app\
                                 --install \
-                                --set nameOverride=${helmReleaseName}
+                                --set nameOverride=${helmReleaseName} \
                                 --set image.repository=${dockerImageRepository},\
                                 --set image.tag=${dockerImageTag}
                            """
