@@ -1,5 +1,6 @@
 FROM alpine
 
+docker pull lachlanevenson/k8s-helm
 ENV KUBE_LATEST_VERSION=v1.10.3
 ENV HELM_VERSION=v2.9.1
 ENV HELM_FILENAME=helm-${HELM_VERSION}-linux-amd64.tar.gz

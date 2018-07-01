@@ -5,6 +5,6 @@ WORKDIR /usr/src/hello-jenkins
 
 RUN npm install
 
-CMD npm start
+CMD ["npm", "start"]
 
 EXPOSE 3000
