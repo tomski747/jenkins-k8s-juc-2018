@@ -51,7 +51,7 @@ spec:
         stage('Test') {
             steps {
                 container('builder') {
-                    sh "docker run --rm -it ${fullDockerImageTag} npm test "
+                    sh "docker run --rm ${fullDockerImageTag} npm test "
                 }
             }
         }
