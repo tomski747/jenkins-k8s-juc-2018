@@ -38,7 +38,9 @@ spec:
         stage('Docker Build') {
             steps {
                 script {
-                    dockerImageTag = "tkdemo/${JOB_BASE_NAME}:${BUILD_NUMBER}"
+                    dockerImageRepository = "tkdemo/${JOB_BASE_NAME}"
+                    dockerImageTag = "${BRANCH_NAME}:${BUILD_NUMBER}"
+                    fullDockerImageTag = "${dockerImageRepository}:${dockerImageTag}"
                 }
                 container('builder') {
                     sh "echo docker build  -t ${dockerImageTag} ."
@@ -49,24 +51,31 @@ spec:
         stage('Test') {
             steps {
                 container('builder') {
-                    sh "echo docker run --rm -it ${dockerImageTag} npm test "
+                    sh "echo docker run --rm -it ${fullDockerImageTag} npm test "
                     sh "env"
                 }
             }
         }
 
-        stage('Publish'){
-            steps{
-                container('builder'){
-                    sh "docker login -u ${DOCKERHUB_USR} -p ${DOCKERHUB_PSW}"
+        stage('Publish') {
+            steps {
+                container('builder') {
+                    sh "echo docker login -u ${DOCKERHUB_USR} -p ${DOCKERHUB_PSW}"
+                    sh "echo docker push ${fullDockerImageTag}"
                 }
             }
         }
         stage('Deploy') {
-            steps{
-                container('deployer'){
-                    dir('helm-charts/hello-jenkins')
-                    sh "echo helm upgrade --install ${BRANCH_NAME}"
+            steps {
+                container('deployer') {
+                    dir('helm-charts/hello-jenkins') {
+                        sh """
+                            echo helm upgrade ${BRANCH_NAME} \
+                                 --install \
+                                 --values image.repository=${dockerImageRepository},\
+                                          image.tag=${dockerImageTag} .
+                           """
+                    }
                 }
             }
         }
