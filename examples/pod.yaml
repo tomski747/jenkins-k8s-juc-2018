@@ -2,24 +2,14 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: docker-builder
+  name: mypod
   labels:
-    app: docker
+    foo: bar
 spec:
-  # Declare shared volumes between containers
-  volumes:
-    - name: docker-sock
-      hostPath:
-        path: /var/run/docker.sock
   containers:
-  - name: docker
-    # Using docker official docker image
-    image: docker
-    command: ['sh', '-c', 'docker ps']
-    # Might be security concern
-    securityContext:
-      privileged: true
-    # Where to mount
-    volumeMounts:
-      - name: docker-sock
-        mountPath: /var/run/docker.sock
+    - name: alpine
+      image: alpine
+      command: ['sh', '-c', 'echo the value of FOO is $FOO']
+      env:
+        - name: FOO
+          value: BAR
